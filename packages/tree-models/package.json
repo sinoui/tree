@@ -1,5 +1,5 @@
 {
-  "name": "@sinoui/tree-model",
+  "name": "@sinoui/tree-models",
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
     "test": "ts-lib-tools test",
     "lint": "ts-lib-tools lint"
   },
-  "umd:main": "dist/sinoui-tree-model.umd.production.js",
-  "module": "dist/sinoui-tree-model.esm.js",
+  "umd:main": "dist/sinoui-tree-models.umd.production.js",
+  "module": "dist/sinoui-tree-models.esm.js",
   "license": "MIT"
 }
