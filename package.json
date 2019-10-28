@@ -5,6 +5,14 @@
   "workspaces": [
     "packages/*"
   ],
+  "homepage": "https://sinoui.github.io/tree",
+  "bugs": {
+    "url": "https://github.com/sinoui/tree/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sinoui/tree.git"
+  },
   "scripts": {
     "test": "ts-lib-tools test",
     "build": "lerna run build",
