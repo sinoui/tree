@@ -1,19 +1,10 @@
 {
-  "include": [
-    "packages",
-    "types",
-    "docs"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "include": ["packages", "types", "docs"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
@@ -36,9 +27,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@sinoui-tree/*": [
-        "packages/*/src"
-      ]
+      "@sinoui/*": ["packages/*/src"]
     }
   }
 }

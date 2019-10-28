@@ -1,0 +1,36 @@
+{
+  "name": "@sinoui/tree",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@sinoui/ripple": "^1.0.2",
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.15",
+    "lodash-es": "^4.17.15",
+    "polished": "^3.4.1",
+    "react-dnd-html5-backend": "^3.0.2",
+    "react-icons": "^3.2.2",
+    "sinoui-components": "^0.2.5",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^9.3.0",
+    "@types/classnames": "^2.2.9",
+    "@types/styled-components": "^4.1.19",
+    "typescript": "^3.6.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
+    "styled-components": ">=4.0.0"
+  },
+  "scripts": {
+    "build": "ts-lib-tools build",
+    "test": "ts-lib-tools test",
+    "lint": "ts-lib-tools lint"
+  },
+  "umd:main": "dist/sinoui-tree.umd.production.js",
+  "module": "dist/sinoui-tree.esm.js",
+  "license": "MIT"
+}

@@ -13,18 +13,18 @@ export default interface TreeSelectStrategy {
    * @type {string[]}
    * @memberof TreeSelectStrategy
    */
-  selectedItems: string[];
+  selectedItems: string[] | undefined;
   /**
    * 切换节点的选中状态
    *
    * @param {TreeNode} treeNode
    * @memberof TreeSelectStrategy
    */
-  toggle(treeNode: TreeNode);
+  toggle(treeNode: TreeNode): void;
   /**
    * 节点是否被选中
    */
-  isSelected(treeNode: TreeNode);
+  isSelected(treeNode: TreeNode): boolean;
 
   /**
    * 节点是否被部分选中
@@ -32,5 +32,5 @@ export default interface TreeSelectStrategy {
    * @param {TreeNode} treeNode
    * @memberof TreeSelectStrategy
    */
-  isPartialSelected(treeNode: TreeNode);
+  isPartialSelected(treeNode: TreeNode): boolean;
 }
