@@ -1,8 +1,392 @@
 ---
-name: 开始
+name: 开始使用
 route: /
 ---
 
-# 开始使用
+import { Playground } from 'docz';
+import treeData, { getTreeNodes } from './treeData';
+import Tree from '@sinoui/tree';
+import DraggableTreeDemo from './components/DraggableTreeDemo';
 
-在这里写项目使用文档。
+# @sinoui/tree
+
+> 树组件旨在展现完整的层级关系，并具有展开、收起、选择等交互功能。
+
+## 依赖安装
+
+```shell
+yarn add @sinoui/tree
+```
+
+## 入门示例
+
+```tsx
+import React from 'react';
+import Tree from '@sinoui/tree';
+import treeData from './treeData';
+function Demo() {
+  return <Tree nodes={treeData} />;
+}
+```
+
+<Playground>
+  <Tree nodes={treeData} />
+</Playground>
+
+其中`Tree`组件在渲染树组件时，需要的`nodes`数据结构为：
+
+```javascript
+[
+  {
+    id: 'node1', // 节点id
+    title: '节点一', // 节点名称
+    selected: true, //
+    leaf: false, // 是否为叶子结点
+    level: 1, // 层级关系
+    selectType: 'checkbox', // 选择类型
+    children: [
+      // 子节点
+      {
+        id: 'node2',
+        title: '节点二',
+      },
+    ],
+    parent:{  //父节点
+      ...
+    }
+  },
+];
+```
+
+## 一次性加载所有数据
+
+所谓一次性加载所有数据，即调用一次后端接口获取所有节点数据，然后通过`nodes`属性传给`Tree`组件。
+
+<Playground>
+  <Tree nodes={treeData} />
+</Playground>
+
+## 逐级加载数据
+
+首先获取第一层级树节点，在点击节点时，逐个加载数据。这里需要给`Tree`组件一个`loadChildren`方法属性，通过此方法加载数据。
+
+<Playground>
+  {() => {
+    const loadChildren = (treeNode) => {
+      if (!treeNode) {
+        return getTreeNodes(0, 0, 'node', false);
+      } else {
+        const promise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(getTreeNodes(treeNode.level + 1, 0, treeNode.id, false));
+          }, 1500);
+        });
+
+        return promise;
+      }
+    };
+
+    return <Tree loadChildren={loadChildren} dense={false} />;
+
+}}
+
+</Playground>
+
+## 多选
+
+给`Tree`组件指定`multiple`属性即可达到多选效果。
+
+<Playground>
+  {() => {
+    const loadChildren = (treeNode) => {
+      if (!treeNode) {
+        return getTreeNodes(0, 0, 'node', false);
+      } else {
+        const promise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(getTreeNodes(treeNode.level + 1, 0, treeNode.id, false));
+          }, 1500);
+        });
+        return promise;
+      }
+    };
+
+    return (
+      <Tree
+        loadChildren={loadChildren}
+        multiple
+        selectedItems={['node_1', 'node_2']}
+      />
+    );
+
+}}
+
+</Playground>
+
+## 级联选择
+
+通过给`Tree`组件一个`cascade`属性实现级联选择。
+
+<Playground>
+  {() => {
+    const loadChildren = (treeNode) => {
+      if (!treeNode) {
+        return getTreeNodes(0, 0, 'node', false).map((node) => ({
+          ...node,
+          selectType: 'checkbox',
+          selectable: node.id !== 'node_9',
+        }));
+      } else {
+        const promise = new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(
+              getTreeNodes(treeNode.level + 1, 0, treeNode.id, false).map(
+                (node) => ({ ...node, selectType: 'checkbox' }),
+              ),
+            );
+          }, 1500);
+        });
+
+        return promise;
+      }
+    };
+
+    return (
+      <Tree
+        loadChildren={loadChildren}
+        multiple
+        cascade
+      />
+    );
+
+}}
+
+</Playground>
+
+## 拖拽新增和排序
+
+这里我们使用[react-dnd](https://www.npmjs.com/package/react-dnd)来实现拖拽新增和排序。
+
+首先需要自定义树节点的渲染组件`TreeNodeComponent.tsx`:
+
+```tsx
+import React from 'react';
+import {
+  DragSource,
+  DropTarget,
+  DragSourceConnector,
+  DragSourceMonitor,
+  DropTargetConnector,
+  DropTargetMonitor,
+} from 'react-dnd';
+import { findDOMNode } from 'react-dom';
+import { TreeNodeProps, TreeNode } from '@sinoui/tree';
+
+/**
+ * Implements the drag source contract.
+ */
+const treeNodeDrag = {
+  beginDrag(props: TreeNodeProps) {
+    return {
+      nodeId: props.node.id,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      parentId: props.node.parent!.id,
+    };
+  },
+};
+
+const treeNodeDrop = {
+  hover(props: TreeNodeProps, monitor: DropTargetMonitor, component: any) {
+    const dragNodeId = monitor.getItem().nodeId;
+    const dragIndex = props.treeModel.nodes.findIndex(
+      (node) => node.id === dragNodeId,
+    );
+    const hoverNodeId = props.node.id;
+    const hoverIndex = props.treeModel.nodes.findIndex(
+      (node) => node.id === hoverNodeId,
+    );
+    if (hoverIndex === dragIndex) {
+      return;
+    }
+
+    const hoverParentNodeId = props.node.parent!.id;
+
+    // eslint-disable-next-line react/no-find-dom-node
+    const hoverBoundingRect = (findDOMNode(
+      component,
+    ) as HTMLElement).getBoundingClientRect();
+    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+    const clientOffset = monitor.getClientOffset();
+
+    const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
+
+    // Dragging downwards
+    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      return;
+    }
+
+    // Dragging upwards
+    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      return;
+    }
+
+    const idx = props.treeModel.getNodeIdxOfParent(hoverNodeId);
+    props.treeModel.moveNode(dragNodeId, hoverParentNodeId, idx);
+  },
+
+  canDrop(props: TreeNodeProps, monitor: DropTargetMonitor) {
+    return monitor.getItem().parentId === props.node.parent!.id;
+  },
+};
+
+class TreeNodeComponent extends React.Component<
+  TreeNodeProps & {
+    connectDragSource: any;
+    isDragging: boolean;
+    connectDropTarget: any;
+    isOvering: boolean;
+  }
+> {
+  public render() {
+    const { connectDropTarget, connectDragSource } = this.props;
+    return (
+      <TreeNode
+        {...this.props}
+        innerRef={(instance) => {
+          // eslint-disable-next-line react/no-find-dom-node
+          const domNode = findDOMNode(instance);
+          if (domNode) {
+            connectDropTarget(domNode);
+            connectDragSource(domNode);
+          }
+        }}
+      />
+    );
+  }
+}
+function collect(connect: DragSourceConnector, monitor: DragSourceMonitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging(),
+  };
+}
+
+function dropCollect(connect: DropTargetConnector, monitor: DropTargetMonitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+  };
+}
+
+export default DropTarget('sinoui-tree-node', treeNodeDrop, dropCollect)(
+  DragSource('sinoui-tree-node', treeNodeDrag, collect)(
+    TreeNodeComponent as any,
+  ),
+);
+```
+
+然后还需要定义一个可拖拽的新增节点组件`DraggableTreeNode.tsx`：
+
+```tsx
+import React from 'react';
+import { DragSource, DragSourceConnector, DragSourceMonitor } from 'react-dnd';
+import { findDOMNode } from 'react-dom';
+import { TreeNodeProps } from '@sinoui/tree';
+
+/**
+ * Implements the drag source contract.
+ */
+const treeNodeDrag = {
+  beginDrag() {
+    return {
+      nodeId: '001',
+    };
+  },
+};
+
+class DraggableTreeNode extends React.Component<
+  TreeNodeProps & {
+    connectDragSource: any;
+    isDragging: boolean;
+    connectDropTarget: any;
+    isOvering: boolean;
+  }
+> {
+  public render() {
+    const { connectDragSource } = this.props;
+    return (
+      <div
+        style={{ height: 36 }}
+        ref={(instance) => {
+          // eslint-disable-next-line react/no-find-dom-node
+          const domNode = findDOMNode(instance);
+          if (domNode) {
+            connectDragSource(domNode);
+          }
+        }}
+      >
+        新增节点
+      </div>
+    );
+  }
+}
+function collect(connect: DragSourceConnector, monitor: DragSourceMonitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging(),
+  };
+}
+
+export default DragSource('sinoui-tree-node', treeNodeDrag, collect)(
+  DraggableTreeNode as any,
+);
+```
+
+最后使用`TreeNodeComponent`和 `DraggableTreeNode`组件实现拖拽新增和排序：
+
+```tsx
+import React from 'react';
+import Tree, { TreeNodeConfigType, TreeNodeType } from '@sinoui/tree';
+import styled from 'styled-components';
+import { getTreeNodes } from '../treeData';
+import TreeNodeComponent from './TreeNode';
+import DraggableTreeNode from './DraggableTreeNode';
+
+function loadChildren(
+  treeNode?: TreeNodeType,
+): Promise<TreeNodeConfigType[]> | TreeNodeConfigType[] {
+  if (!treeNode) {
+    return getTreeNodes(0, 0, 'node', false);
+  }
+  const promise: Promise<TreeNodeConfigType[]> = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(getTreeNodes(treeNode.level + 1, 0, treeNode.id, false));
+    }, 1500);
+  });
+
+  return promise;
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+function DraggableTreeDemo() {
+  return (
+    <Wrapper>
+      <Tree
+        loadChildren={loadChildren}
+        renderNode={(props) => <TreeNodeComponent {...props} />}
+      />
+      <DraggableTreeNode />
+    </Wrapper>
+  );
+}
+
+export default DragDropContext(HTML5Backend)(DraggableTreeDemo as any);
+```
+
+<Playground>
+  <DraggableTreeDemo />
+</Playground>

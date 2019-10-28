@@ -44,7 +44,9 @@
   "version": "0.1.0",
   "dependencies": {
     "@babel/polyfill": "^7.6.0",
-    "@babel/runtime": "^7.6.3"
+    "@babel/runtime": "^7.6.3",
+    "react-dnd": "^3.0.2",
+    "react-dnd-html5-backend": "^3.0.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.0",
