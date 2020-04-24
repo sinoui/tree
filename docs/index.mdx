@@ -196,6 +196,7 @@ const treeNodeDrag = {
 };
 
 const treeNodeDrop = {
+  drop() {},
   hover(props: TreeNodeProps, monitor: DropTargetMonitor, component: any) {
     const dragNodeId = monitor.getItem().nodeId;
     const dragIndex = props.treeModel.nodes.findIndex(
@@ -217,7 +218,6 @@ const treeNodeDrop = {
     ) as HTMLElement).getBoundingClientRect();
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
     const clientOffset = monitor.getClientOffset();
-
     const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
 
     // Dragging downwards
@@ -230,8 +230,16 @@ const treeNodeDrop = {
       return;
     }
 
-    const idx = props.treeModel.getNodeIdxOfParent(hoverNodeId);
-    props.treeModel.moveNode(dragNodeId, hoverParentNodeId, idx);
+    if (dragIndex !== -1) {
+      const idx = props.treeModel.getNodeIdxOfParent(hoverNodeId);
+      props.treeModel.moveNode(dragNodeId, hoverParentNodeId, idx);
+    } else {
+      props.treeModel.addNode(hoverParentNodeId, {
+        id: dragNodeId,
+        title: '新增节点',
+        leaf: true,
+      });
+    }
   },
 
   canDrop(props: TreeNodeProps, monitor: DropTargetMonitor) {
