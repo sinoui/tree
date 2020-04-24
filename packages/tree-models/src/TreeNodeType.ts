@@ -1,4 +1,3 @@
-import { ColorProp } from 'sinoui-components/types';
 import TreeNodeConfigType from './TreeNodeConfigType';
 
 /**
@@ -89,11 +88,11 @@ export default interface TreeNodeType {
   /**
    * 图标颜色
    */
-  iconColor?: ColorProp;
+  iconColor?: string;
   /**
    * 展开图标的颜色
    */
-  expandedIconColor?: ColorProp;
+  expandedIconColor?: string;
   /**
    * 节点配置
    *

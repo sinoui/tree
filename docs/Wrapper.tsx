@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import defaultTheme from 'sinoui-components/styles/defaultTheme';
+import { defaultTheme } from '@sinoui/theme';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import './Wrapper.css';

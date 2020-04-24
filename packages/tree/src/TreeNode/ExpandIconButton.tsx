@@ -1,9 +1,9 @@
 import React from 'react';
 import { withRipple } from '@sinoui/ripple';
-import Icon from 'sinoui-components/Icon';
+import IconButton from '@sinoui/core/IconButton';
 import TreeModel, { TreeNode } from '@sinoui/tree-models';
-import { MdArrowDropDown } from 'react-icons/md';
 import styled from 'styled-components';
+import ArrowDropDown from '@sinoui/icons/ArrowDropDown';
 
 export interface Props {
   node: TreeNode;
@@ -15,7 +15,7 @@ export interface ExpandIconProps {
   expanded?: boolean;
 }
 
-const ExpandIcon = styled(Icon).attrs(({ color }) => ({
+const ExpandIcon = styled(IconButton).attrs(({ color }) => ({
   color: color || 'primary',
 }))<ExpandIconProps>`
   cursor: pointer;
@@ -43,7 +43,7 @@ class ExpandIconButton extends React.Component<Props> {
     const { node } = this.props;
     return (
       <ExpandIcon onClick={this.onClick} expanded={node.expanded}>
-        <MdArrowDropDown />
+        <ArrowDropDown />
       </ExpandIcon>
     );
   }

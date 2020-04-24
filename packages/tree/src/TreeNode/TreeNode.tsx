@@ -1,9 +1,8 @@
 import React from 'react';
-import Progress from 'sinoui-components/Progress';
-import Icon, { SimpleIcon } from 'sinoui-components/Icon';
-import { P } from 'sinoui-components/Text';
-import { CheckboxButton } from 'sinoui-components/Checkbox';
-import { RadioButton } from 'sinoui-components/Radio';
+import Progress from '@sinoui/core/Progress';
+import Body2 from '@sinoui/core/Body2';
+import CheckboxButton from '@sinoui/core/Checkbox';
+import RadioButton from '@sinoui/core/Radio';
 import classNames from 'classnames';
 import TreeModel, {
   TreeNodeType,
@@ -75,12 +74,12 @@ function renderNodeIcon(props: TreeNodeProps) {
 
   let nodeIcon;
   if (node.icon) {
-    nodeIcon = <Icon color={props.node.iconColor}>{props.node.icon}</Icon>;
+    nodeIcon = props.node.icon;
   } else if (
     typeof nodeIconProp === 'string' ||
     typeof nodeIconProp === 'number'
   ) {
-    nodeIcon = <SimpleIcon>{props.nodeIcon}</SimpleIcon>;
+    nodeIcon = props.nodeIcon;
   } else if (typeof nodeIconProp === 'function') {
     nodeIcon = nodeIconProp(props);
   } else {
@@ -158,7 +157,7 @@ function renderCheckbox(props: TreeNodeProps) {
           disabled={props.node.disabled}
           checked={props.node.selected}
           indeterminate={props.node.partialSelected}
-          onChange={toggleSelect}
+          onChange={toggleSelect as any}
           onClick={(event) => event.stopPropagation()}
         />
       </span>
@@ -203,9 +202,9 @@ function TreeNode({
       {renderProgress(props)}
       {renderCheckbox(props)}
       {renderNodeIcon(props)}
-      <P className="sinoui-tree-node__title">
+      <Body2 className="sinoui-tree-node__title">
         {renderNodeTitle ? renderNodeTitle(props) : node.title}
-      </P>
+      </Body2>
       {renderTreeNodeRightSection && renderTreeNodeRightSection(props)}
     </TreeNodeLayout>
   );

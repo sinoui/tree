@@ -1,5 +1,6 @@
 {
   "name": "sinoui-tree",
+  "version": "0.1.0",
   "license": "MIT",
   "private": true,
   "workspaces": [
@@ -49,10 +50,9 @@
       "git add"
     ]
   },
-  "version": "0.1.0",
   "dependencies": {
-    "@babel/polyfill": "^7.6.0",
-    "@babel/runtime": "^7.6.3",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/runtime": "^7.9.2",
     "react-dnd": "^3.0.2",
     "react-dnd-html5-backend": "^3.0.2"
   },
@@ -79,7 +79,10 @@
     "style-loader": "^1.0.0",
     "ts-lib-tools": "^0.5.0",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
-    "typescript": "^3.6.4",
+    "typescript": "^3.8.3",
     "webpack-docz-ghpages-plugin": "^0.5.0"
+  },
+  "resolutions": {
+    "styled-components": "^5.1.0"
   }
 }

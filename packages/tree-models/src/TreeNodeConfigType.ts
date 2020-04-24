@@ -1,5 +1,3 @@
-import { ColorProp } from 'sinoui-components/types';
-
 /**
  * 树节点
  */
@@ -73,11 +71,11 @@ export default interface TreeNodeConfigType {
   /**
    * 图标颜色
    */
-  iconColor?: ColorProp;
+  iconColor?: string;
   /**
    * 展开图标的颜色
    */
-  expandedIconColor?: ColorProp;
+  expandedIconColor?: string;
 
   /**
    * 是否为虚节点，表示不参与到选中节点中

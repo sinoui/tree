@@ -30,7 +30,7 @@ const TreeNodeLayout = styled.div<Props>`
 
   color: ${(props) =>
     props.node.selected
-      ? props.theme.palette.primary[500]
+      ? props.theme.palette.primary.main
       : props.theme.palette.text.primary};
 
   & > .sinoui-tree-node__icon {
@@ -62,14 +62,14 @@ const TreeNodeLayout = styled.div<Props>`
   background-color: ${(props) =>
     props.node.selected &&
     !props.disableSelectedNodeStyle &&
-    opacify(-0.4, props.theme.palette.primary[100])};
+    opacify(-0.4, props.theme.palette.primary.main)};
 
   &:hover {
-    color: ${(props) => props.theme.palette.primary[500]};
+    color: ${(props) => props.theme.palette.primary.main};
     background-color: ${(props) =>
       opacify(
         props.node.selected && !props.disableSelectedNodeStyle ? -0.4 : -0.8,
-        props.theme.palette.primary[100],
+        props.theme.palette.primary.main,
       )};
   }
 
