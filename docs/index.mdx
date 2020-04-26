@@ -81,15 +81,11 @@ function Demo() {
             resolve(getTreeNodes(treeNode.level + 1, 0, treeNode.id, false));
           }, 1500);
         });
-
         return promise;
       }
     };
-
     return <Tree loadChildren={loadChildren} dense={false} />;
-
-}}
-
+  }}
 </Playground>
 
 ## 多选
@@ -110,7 +106,6 @@ function Demo() {
         return promise;
       }
     };
-
     return (
       <Tree
         loadChildren={loadChildren}
@@ -118,9 +113,7 @@ function Demo() {
         selectedItems={['node_1', 'node_2']}
       />
     );
-
-}}
-
+  }}
 </Playground>
 
 ## 级联选择
@@ -140,27 +133,20 @@ function Demo() {
         const promise = new Promise((resolve) => {
           setTimeout(() => {
             resolve(
-              getTreeNodes(treeNode.level + 1, 0, treeNode.id, false).map(
-                (node) => ({ ...node, selectType: 'checkbox' }),
-              ),
+              getTreeNodes(
+                treeNode.level + 1,
+                0,
+                treeNode.id,
+                false,
+              ).map((node) => ({ ...node, selectType: 'checkbox' })),
             );
           }, 1500);
         });
-
         return promise;
       }
     };
-
-    return (
-      <Tree
-        loadChildren={loadChildren}
-        multiple
-        cascade
-      />
-    );
-
-}}
-
+    return <Tree loadChildren={loadChildren} multiple cascade />;
+  }}
 </Playground>
 
 ## 拖拽新增和排序
@@ -286,10 +272,16 @@ function dropCollect(connect: DropTargetConnector, monitor: DropTargetMonitor) {
   };
 }
 
-export default DropTarget('sinoui-tree-node', treeNodeDrop, dropCollect)(
-  DragSource('sinoui-tree-node', treeNodeDrag, collect)(
-    TreeNodeComponent as any,
-  ),
+export default DropTarget(
+  'sinoui-tree-node',
+  treeNodeDrop,
+  dropCollect,
+)(
+  DragSource(
+    'sinoui-tree-node',
+    treeNodeDrag,
+    collect,
+  )(TreeNodeComponent as any),
 );
 ```
 
@@ -345,9 +337,11 @@ function collect(connect: DragSourceConnector, monitor: DragSourceMonitor) {
   };
 }
 
-export default DragSource('sinoui-tree-node', treeNodeDrag, collect)(
-  DraggableTreeNode as any,
-);
+export default DragSource(
+  'sinoui-tree-node',
+  treeNodeDrag,
+  collect,
+)(DraggableTreeNode as any);
 ```
 
 最后使用`TreeNodeComponent`和 `DraggableTreeNode`组件实现拖拽新增和排序：

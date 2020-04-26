@@ -29,4 +29,5 @@ export default {
   public: './docs/assets',
   menu: ['首页'],
   base: getBaseUrl(),
+  propsParser: false,
 };

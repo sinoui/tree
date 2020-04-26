@@ -4,6 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import { defaultTheme, createTheme } from '@sinoui/theme';
 import { useThemeUI } from 'theme-ui';
 import lightBlue from '@sinoui/theme/colors/lightBlue';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 const darkTheme = createTheme({
   palette: {
@@ -12,7 +14,7 @@ const darkTheme = createTheme({
   },
 });
 
-export default ({ children }: { children: React.ReactNode }) => {
+const App = ({ children }: { children: React.ReactNode }) => {
   const { colorMode } = useThemeUI();
   return (
     <ThemeProvider theme={colorMode === 'dark' ? darkTheme : defaultTheme}>
@@ -20,3 +22,5 @@ export default ({ children }: { children: React.ReactNode }) => {
     </ThemeProvider>
   );
 };
+
+export default DragDropContext(HTML5Backend)(App as any);
