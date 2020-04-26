@@ -21,16 +21,13 @@ const Wrapper = styled.div`
     transition: transform 195ms cubic-bezier(0, 0, 0.32, 1) !important;
   }
 
-  .sinoui-tree__expand-icon-button__ripple-layout {
-    width: 32px;
-    height: 32px;
-    top: -6px;
-    left: -6px;
+  .sinoui-tree-node {
+    position: relative;
   }
 
-  .sinoui-tree__expand-icon-button__ripple {
-    width: 32px;
-    height: 32px;
+  .sinoui-icon-button--dense__ripple-layout {
+    top: -4px;
+    left: -4px;
   }
 `;
 
@@ -310,9 +307,12 @@ export default class Tree extends React.Component<TreeProps, TreeState> {
       });
     }
     if (changed && onSelect) {
-      onSelect(selectedItems, selectedItems
-        .map((id) => this.treeModel.nodes.find((node) => node.id === id))
-        .filter(Boolean) as TreeNodeType[]);
+      onSelect(
+        selectedItems,
+        selectedItems
+          .map((id) => this.treeModel.nodes.find((node) => node.id === id))
+          .filter(Boolean) as TreeNodeType[],
+      );
     }
   }
 

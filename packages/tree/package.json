@@ -5,12 +5,12 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@sinoui/ripple": "^1.0.12",
-    "@sinoui/core": "^1.0.0-beta.9",
+    "@sinoui/core": "^1.0.0-beta.10",
     "@sinoui/icons": "^1.0.0-beta.2",
     "classnames": "^2.2.6",
     "lodash": "^4.17.15",
     "lodash-es": "^4.17.15",
-    "polished": "^3.4.1",
+    "polished": "^3.5.2",
     "react-dnd-html5-backend": "^3.0.2",
     "tslib": "^1.10.0"
   },

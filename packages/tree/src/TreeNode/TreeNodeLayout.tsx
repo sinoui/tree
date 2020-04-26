@@ -1,6 +1,13 @@
 import styled from 'styled-components';
-import { opacify } from 'polished';
+import { opacify, parseToHsl, toColorString } from 'polished';
 import { TreeNodeType } from '@sinoui/tree-models';
+
+function lighten(num: number, colorStr: string) {
+  const color = parseToHsl(colorStr);
+
+  color.lightness += (1 - color.lightness) * num;
+  return toColorString(color);
+}
 
 export interface Props {
   useExpandIconToNodeIcon?: boolean;
@@ -62,14 +69,14 @@ const TreeNodeLayout = styled.div<Props>`
   background-color: ${(props) =>
     props.node.selected &&
     !props.disableSelectedNodeStyle &&
-    opacify(-0.4, props.theme.palette.primary.main)};
+    opacify(-0.4, lighten(0.62, props.theme.palette.primary.main))};
 
   &:hover {
     color: ${(props) => props.theme.palette.primary.main};
     background-color: ${(props) =>
       opacify(
         props.node.selected && !props.disableSelectedNodeStyle ? -0.4 : -0.8,
-        props.theme.palette.primary.main,
+        lighten(0.62, props.theme.palette.primary.main),
       )};
   }
 
