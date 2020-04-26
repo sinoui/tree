@@ -1,11 +1,12 @@
 import TreeModel from './TreeModel';
 import TreeModelEventType from './TreeModelEventType';
-import TreeNodeConfigType from './TreeNodeConfigType';
-import TreeNodeType from './TreeNodeType';
-import TreeSelectStrategy from './TreeSelectStrategy';
+import type TreeNodeConfigType from './TreeNodeConfigType';
+import type TreeNodeType from './TreeNodeType';
+import type TreeSelectStrategy from './TreeSelectStrategy';
 
-export {
-  TreeModelEventType,
+export { TreeModelEventType };
+
+export type {
   TreeNodeConfigType,
   TreeNodeType,
   TreeSelectStrategy,

@@ -2,7 +2,7 @@
   "name": "@sinoui/tree",
   "version": "0.1.0",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "types/index.d.ts",
   "dependencies": {
     "@sinoui/ripple": "^1.0.12",
     "@sinoui/core": "^1.0.0-beta.10",
