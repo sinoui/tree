@@ -1,12 +1,12 @@
 {
   "name": "@sinoui/tree",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "dependencies": {
-    "@sinoui/ripple": "^1.0.12",
     "@sinoui/core": "^1.0.0-beta.10",
     "@sinoui/icons": "^1.0.0-beta.2",
+    "@sinoui/ripple": "^1.0.12",
     "classnames": "^2.2.6",
     "lodash": "^4.17.15",
     "lodash-es": "^4.17.15",
