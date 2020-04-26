@@ -29,6 +29,10 @@ const Wrapper = styled.div`
     top: -4px;
     left: -4px;
   }
+
+  .sinoui-checkbox__ripple-layout {
+    left: -4px;
+  }
 `;
 
 export interface TreeProps {

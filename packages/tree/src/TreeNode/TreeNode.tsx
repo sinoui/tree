@@ -101,16 +101,13 @@ function renderNodeIcon(props: TreeNodeProps) {
  * 渲染展开图标
  */
 function renderExpandIcon(props: TreeNodeProps) {
-  const showExpandIcon = !props.node.loading && !props.node.leaf;
+  const { node, treeModel } = props;
+  const showExpandIcon = !node.loading && !node.leaf;
 
   return (
     showExpandIcon && (
       <span className="sinoui-tree-node__icon" key="expandIcon">
-        <ExpandIconButton
-          key="expandIcon"
-          node={props.node}
-          treeModel={props.treeModel}
-        />
+        <ExpandIconButton key="expandIcon" node={node} treeModel={treeModel} />
       </span>
     )
   );
@@ -120,8 +117,9 @@ function renderExpandIcon(props: TreeNodeProps) {
  * 渲染进度图标
  */
 function renderProgress(props: TreeNodeProps) {
+  const { node } = props;
   return (
-    props.node.loading && (
+    node.loading && (
       <span className="sinoui-tree-node__icon" key="progressIcon">
         <Progress key="progress" size={16} thickness={1} />
       </span>
@@ -133,30 +131,33 @@ function renderProgress(props: TreeNodeProps) {
  * 渲染节点的选择框
  */
 function renderCheckbox(props: TreeNodeProps) {
-  if (props.hideSelectedButtonIcon) {
+  const { hideSelectedButtonIcon, node, treeSelectStrategy, multiple } = props;
+  if (hideSelectedButtonIcon) {
     return null;
   }
 
   const toggleSelect = (event: React.ChangeEvent<HTMLElement>) => {
-    event.stopPropagation();
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    }
 
-    if (props.node.selectable !== false && !props.node.disabled) {
-      props.treeSelectStrategy.toggle(props.node);
+    if (node.selectable !== false && !node.disabled) {
+      treeSelectStrategy.toggle(node);
     }
   };
 
   const SelectButton =
-    props.node.selectType === 'radio' ? RadioButton : CheckboxButton;
+    node.selectType === 'radio' ? RadioButton : CheckboxButton;
 
   return (
-    props.multiple &&
-    props.node.selectable !== false && (
+    multiple &&
+    node.selectable !== false && (
       <span className="sinoui-tree-node__icon" key="checkboxIcon">
         <SelectButton
           dense
-          disabled={props.node.disabled}
-          checked={props.node.selected}
-          indeterminate={props.node.partialSelected}
+          disabled={node.disabled}
+          checked={node.selected}
+          indeterminate={node.partialSelected}
           onChange={toggleSelect as any}
           onClick={(event) => event.stopPropagation()}
         />
