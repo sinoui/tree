@@ -1,6 +1,7 @@
 import React from 'react';
 import IconButton from '@sinoui/core/IconButton';
-import TreeModel, { TreeNode } from '@sinoui/tree-models';
+import TreeModel from '@sinoui/tree-models';
+import type { TreeNode } from '@sinoui/tree-models';
 import styled from 'styled-components';
 import ArrowDropDown from '@sinoui/icons/ArrowDropDown';
 

@@ -4,10 +4,8 @@ import Body2 from '@sinoui/core/Body2';
 import CheckboxButton from '@sinoui/core/Checkbox';
 import RadioButton from '@sinoui/core/Radio';
 import classNames from 'classnames';
-import TreeModel, {
-  TreeNodeType,
-  TreeSelectStrategy,
-} from '@sinoui/tree-models';
+import TreeModel from '@sinoui/tree-models';
+import type { TreeNodeType, TreeSelectStrategy } from '@sinoui/tree-models';
 import ExpandIconButton from './ExpandIconButton';
 import TreeNodeLayout from './TreeNodeLayout';
 

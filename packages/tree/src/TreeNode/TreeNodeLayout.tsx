@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { opacify, parseToHsl, toColorString } from 'polished';
-import { TreeNodeType } from '@sinoui/tree-models';
+import type { TreeNodeType } from '@sinoui/tree-models';
 
 function lighten(num: number, colorStr: string) {
   const color = parseToHsl(colorStr);

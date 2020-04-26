@@ -1,8 +1,5 @@
-import TreeModel, {
-  TreeNode,
-  TreeSelectStrategy,
-  TreeModelEventType,
-} from '@sinoui/tree-models';
+import TreeModel, { TreeModelEventType } from '@sinoui/tree-models';
+import type { TreeNode, TreeSelectStrategy } from '@sinoui/tree-models';
 
 enum COLOR {
   /**

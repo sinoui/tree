@@ -2,10 +2,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
-import TreeModel, {
+import TreeModel, { TreeModelEventType } from '@sinoui/tree-models';
+import type {
   TreeNodeConfigType,
   TreeNodeType,
-  TreeModelEventType,
   TreeSelectStrategy,
 } from '@sinoui/tree-models';
 import SingleTreeSelectStrategy from './SingleTreeSelectStrategy';

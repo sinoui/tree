@@ -1,4 +1,5 @@
-import TreeModel, {
+import TreeModel from '@sinoui/tree-models';
+import type {
   TreeNodeType,
   TreeNodeConfigType,
   TreeSelectStrategy,
@@ -8,12 +9,12 @@ import TreeNode from './TreeNode';
 import type { TreeNodeProps } from './TreeNode';
 import type { TreeProps } from './Tree';
 
-export {
-  TreeNode,
+export { TreeNode, TreeModel };
+export type {
+  TreeProps,
+  TreeNodeProps,
   TreeNodeType,
   TreeNodeConfigType,
-  TreeModel,
   TreeSelectStrategy,
 };
-export type { TreeProps, TreeNodeProps };
 export default Tree;

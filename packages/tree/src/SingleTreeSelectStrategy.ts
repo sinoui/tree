@@ -1,4 +1,4 @@
-import { TreeSelectStrategy, TreeNodeType } from '@sinoui/tree-models';
+import type { TreeSelectStrategy, TreeNodeType } from '@sinoui/tree-models';
 
 export default class SingleTreeSelectStrategy implements TreeSelectStrategy {
   // eslint-disable-next-line no-useless-constructor

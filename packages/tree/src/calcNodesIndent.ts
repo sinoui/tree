@@ -1,4 +1,4 @@
-import { TreeNodeType } from '@sinoui/tree-models';
+import type { TreeNodeType } from '@sinoui/tree-models';
 
 interface Options {
   useExpandIconToNodeIcon?: boolean;

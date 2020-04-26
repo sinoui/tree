@@ -1,4 +1,5 @@
-import TreeModel, { TreeNodeType } from '@sinoui/tree-models';
+import TreeModel from '@sinoui/tree-models';
+import type { TreeNodeType } from '@sinoui/tree-models';
 
 export default class MultipleTreeSelectStrategy {
   constructor(public selectedItems: string[] = [], treeModel: TreeModel) {
