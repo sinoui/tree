@@ -104,7 +104,7 @@ it('展开节点', () => {
 
   treeModel.expandNode('root');
 
-  expect(treeModel.getNodeById('root').expanded).toBe(true);
+  expect(treeModel.getNodeById('root')?.expanded).toBe(true);
 
   treeModel.expandNode('node3');
   expect(treeModel.getNodeById('node3').expanded).toBe(true);
@@ -134,13 +134,13 @@ it('收缩节点', () => {
 
   treeModel.collapseNode('root');
 
-  expect(treeModel.getNodeById('root').expanded).toBe(false);
+  expect(treeModel.getNodeById('root')?.expanded).toBe(false);
 });
 
 it('获取根节点', () => {
   const treeModel = new TreeModel(treeData);
 
-  expect(treeModel.rootNodes.length).toBe(1);
+  expect(treeModel.rootNodes?.length).toBe(1);
   expect(treeModel.rootNodes[0].id).toBe('root');
 });
 
@@ -253,7 +253,7 @@ it('新增一个根节点', () => {
     title: 'root2',
   });
 
-  expect(treeModel.rootNodes.length).toBe(2);
+  expect(treeModel.rootNodes?.length).toBe(2);
   expect(treeModel.rootNodes[1].id).toBe('root2');
 });
 
@@ -263,7 +263,7 @@ it('删除叶子节点', () => {
   treeModel.removeNode('node1');
 
   expect(treeModel.nodes.length).toBe(6);
-  expect(treeModel.getNodeById('root').children.length).toBe(3);
+  expect(treeModel.getNodeById('root')?.children.length).toBe(3);
   expect(treeModel.getNodeById('node1')).toBeUndefined();
 });
 
@@ -273,6 +273,20 @@ it('删除非叶子节点', () => {
   treeModel.removeNode('node3');
 
   expect(treeModel.nodes.length).toBe(5);
+});
+
+it('新新增，后删除', () => {
+  const treeModel = new TreeModel(treeData);
+  treeModel.addNode(null, {
+    id: '123',
+    title: '123',
+    leaf: true,
+  });
+
+  treeModel.removeNode('root');
+
+  expect(treeModel.nodes.length).toBe(1);
+  expect(treeModel.nodes[0].id).toBe('123');
 });
 
 it('移动节点：在同一级之间移动叶子节点', () => {
@@ -310,11 +324,11 @@ it('移动节点：在不同级别移动叶子节点', () => {
 
   treeModel.moveNode('node2', 'node1', 0);
 
-  expect(treeModel.getNodeById('root').children.length).toBe(3);
-  expect(treeModel.getNodeById('node1').children.length).toBe(1);
-  expect(treeModel.getNodeById('node1').children[0].id).toBe('node2');
+  expect(treeModel.getNodeById('root')?.children?.length).toBe(3);
+  expect(treeModel.getNodeById('node1')?.children?.length).toBe(1);
+  expect(treeModel.getNodeById('node1')?.children?.[0].id).toBe('node2');
   expect(treeModel.getNodeById('node2').level).toBe(2);
-  expect(treeModel.getNodeById('node2').parent.id).toBe('node1');
+  expect(treeModel.getNodeById('node2').parent?.id).toBe('node1');
 });
 
 it('移动节点：在不同级别移动非叶子节点', () => {
@@ -322,9 +336,9 @@ it('移动节点：在不同级别移动非叶子节点', () => {
 
   treeModel.moveNode('node3', 'node6', 0);
 
-  expect(treeModel.getNodeById('root').children.length).toBe(3);
+  expect(treeModel.getNodeById('root')?.children?.length).toBe(3);
   expect(treeModel.getNodeById('node6').leaf).toBe(false);
-  expect(treeModel.getNodeById('node6').children.length).toBe(1);
+  expect(treeModel.getNodeById('node6').children?.length).toBe(1);
   expect(treeModel.getNodeById('node3').level).toBe(3);
   expect(treeModel.getNodeById('node4').level).toBe(4);
 });
@@ -342,8 +356,8 @@ it('移动节点：将节点移动跟节点上', () => {
 
   treeModel.moveNode('node3', null, 1);
 
-  expect(treeModel.rootNodes.length).toBe(2);
-  expect(treeModel.rootNodes[1].id).toBe('node3');
+  expect(treeModel.rootNodes?.length).toBe(2);
+  expect(treeModel.rootNodes?.[1].id).toBe('node3');
 });
 
 it('判断两个节点是否在同一层级路径中', () => {
@@ -367,8 +381,8 @@ it('同步加载器加载子节点数据：加载一级数据', () => {
   ]);
   const treeModel = new TreeModel(undefined, loadChildren);
 
-  expect(treeModel.rootNodes.length).toBe(2);
-  expect(treeModel.rootNodes.map((node) => node.id)).toEqual([
+  expect(treeModel.rootNodes?.length).toBe(2);
+  expect(treeModel.rootNodes?.map((node) => node.id)).toEqual([
     'root1',
     'root2',
   ]);
@@ -390,7 +404,7 @@ it('同步加载器加载子节点数据：加载多级数据', () => {
   ]);
   const treeModel = new TreeModel(undefined, loadChildren);
 
-  expect(treeModel.rootNodes.length).toBe(1);
+  expect(treeModel.rootNodes?.length).toBe(1);
   expect(treeModel.getNodeById('node1').level).toBe(1);
 });
 
@@ -416,7 +430,7 @@ it('同步加载器加载子节点：展开节点时加载数据', () => {
 
   treeModel.expandNode('root');
 
-  expect(treeModel.getNodeById('root').loaded).toBe(true);
+  expect(treeModel.getNodeById('root')?.loaded).toBe(true);
   expect(treeModel.nodes.length).toBe(2);
 });
 
@@ -498,7 +512,7 @@ it('异步加载子节点：异步加载根节点', async () => {
 
   await loadRootNodesPromise;
 
-  expect(treeModel.rootNodes.length).toBe(1);
+  expect(treeModel.rootNodes?.length).toBe(1);
 });
 
 it('异步加载子节点：异步加载多级子节点', async () => {

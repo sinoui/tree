@@ -269,6 +269,13 @@ export default class TreeModel {
     return node;
   }
 
+  public getLastPosterityNode(node: TreeNodeType): TreeNodeType {
+    if (node.children && node.children.length > 0) {
+      return this.getLastPosterityNode(node.children[node.children.length - 1]);
+    }
+    return node;
+  }
+
   /**
    * 获取插入节点的位置
    *
@@ -277,16 +284,21 @@ export default class TreeModel {
    */
   public getInsertNodePos(parent: TreeNodeType, pos: number) {
     const siblingNode = this.getNodeAt(parent, pos);
+
+    const getNodeEndPos = (node: TreeNodeType): number => {
+      return this.getNodeIdx(this.getLastPosterityNode(node));
+    };
+
     if (!siblingNode && pos === -1) {
-      return this.getNodeIdx(parent) + 1;
+      return getNodeEndPos(parent) + 1;
     }
     if (!siblingNode) {
       return -1;
     }
     if (siblingNode && pos === -1) {
-      return this.getNodeIdx(siblingNode) + 1;
+      return getNodeEndPos(siblingNode) + 1;
     }
-    return this.getNodeIdx(siblingNode);
+    return getNodeEndPos(siblingNode);
   }
 
   /**
@@ -467,7 +479,8 @@ export default class TreeModel {
     return (
       !node.leaf &&
       (!node.children || node.children.length === 0) &&
-      (!node.loading && !node.loaded) &&
+      !node.loading &&
+      !node.loaded &&
       !!this.loadChildren
     );
   }
