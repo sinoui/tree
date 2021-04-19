@@ -391,6 +391,87 @@ export default class TreeModel {
   }
 
   /**
+   *
+   *
+   * @param {string} dragNodeId 拖拽节点的id
+   * @param {string} hoverNodeId 目标节点的id
+   * @param {('after' | 'before')} [position='after'] 拖拽节点相对于目标节点的位置
+   * @return {*}
+   * @memberof TreeModel
+   */
+  public moveNodeByPosition(
+    dragNodeId: string,
+    hoverNodeId: string,
+    position: 'after' | 'before' = 'after',
+  ) {
+    if (!dragNodeId || !hoverNodeId) {
+      return false;
+    }
+
+    if (this.isInheritanceRelationship(dragNodeId, hoverNodeId)) {
+      return false;
+    }
+
+    const dragNode = this.getNodeById(dragNodeId);
+    let hoverNode = this.getNodeById(hoverNodeId);
+
+    const dragIdx = this.getNodeIdx(dragNode);
+    const dragCount = this.getDescendantCount(dragNode) + 1;
+    const movingNodes = this.nodes.splice(dragIdx, dragCount);
+
+    let hoverIdx = this.getNodeIdx(hoverNode);
+
+    /*
+      1. 位置为before，默认拖拽到当前hover节点的同级节点
+      2. 位置为after
+        2.1 如果存在子节点，且目标节点处于展开状态，认为拖拽到当前hover节点的下级节点
+        2.2 如果不存在子节点，或者目标节点处于折叠状态，认为拖拽到当前hover节点的统计节点
+    */
+    if (position === 'after') {
+      if (
+        hoverNode.expanded &&
+        hoverNode.children &&
+        hoverNode.children.length > 0
+      ) {
+        [hoverNode] = hoverNode.children;
+        hoverIdx += 1;
+      } else {
+        hoverIdx += this.getDescendantCount(hoverNode) + 1;
+      }
+    }
+
+    const prevParent = dragNode.parent ?? this.virtualRootNode;
+    const nextParent = hoverNode.parent ?? this.virtualRootNode;
+    this.nodes.splice(hoverIdx, 0, ...movingNodes);
+
+    if (prevParent !== nextParent) {
+      const levelDelta = nextParent.level - prevParent.level;
+      if (levelDelta !== 0) {
+        movingNodes.forEach((movingNode) => {
+          // eslint-disable-next-line no-param-reassign
+          movingNode.level += levelDelta;
+        });
+      }
+
+      dragNode.parent = nextParent;
+      nextParent.leaf = false;
+
+      prevParent.children = this.getChildren(prevParent);
+    }
+
+    nextParent.children = this.getChildren(nextParent);
+
+    this.eventEmitter.emit(
+      TreeModelEventType.MOVE_NODE,
+      dragNodeId,
+      hoverNodeId,
+      position,
+    );
+
+    return true;
+  }
+
+  /**
    * 判断两个节点是否在同一个层级路径中
    *
    * @param parentId 父节点

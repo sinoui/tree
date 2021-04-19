@@ -26,8 +26,8 @@ const treeNodeDrag = {
 
 const treeNodeDrop = {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  drop() {},
-  hover(props: TreeNodeProps, monitor: DropTargetMonitor, component: any) {
+  // drop() {},
+  drop(props: TreeNodeProps, monitor: DropTargetMonitor, component: any) {
     const dragNodeId = monitor.getItem().nodeId;
     const dragIndex = props.treeModel.nodes.findIndex(
       (node) => node.id === dragNodeId,
@@ -36,9 +36,6 @@ const treeNodeDrop = {
     const hoverIndex = props.treeModel.nodes.findIndex(
       (node) => node.id === hoverNodeId,
     );
-    if (hoverIndex === dragIndex) {
-      return;
-    }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const hoverParentNodeId = props.node.parent!.id;
@@ -53,30 +50,41 @@ const treeNodeDrop = {
     const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
 
     // Dragging downwards
-    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-      return;
-    }
+    // if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+    //   return;
+    // }
 
-    // Dragging upwards
-    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-      return;
-    }
+    // // Dragging upwards
+    // if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+    //   return;
+    // }
 
-    if (dragIndex !== -1) {
-      const idx = props.treeModel.getNodeIdxOfParent(hoverNodeId);
-      props.treeModel.moveNode(dragNodeId, hoverParentNodeId, idx);
+    let position: 'before' | 'after';
+    if (hoverClientY > hoverMiddleY) {
+      position = 'after';
     } else {
-      props.treeModel.addNode(hoverParentNodeId, {
-        id: dragNodeId,
-        title: '新增节点',
-        leaf: true,
-      });
+      position = 'before';
     }
+
+    console.log(props.node.title, position);
+    props.treeModel.moveNodeByPosition(dragNodeId, hoverNodeId, position);
+
+    // if (dragIndex !== -1) {
+    //   const idx = props.treeModel.getNodeIdxOfParent(hoverNodeId);
+    //   props.treeModel.moveNode(dragNodeId, hoverParentNodeId, idx);
+    // } else {
+    //   props.treeModel.addNode(hoverParentNodeId, {
+    //     id: dragNodeId,
+    //     title: '新增节点',
+    //     leaf: true,
+    //   });
+    // }
   },
 
   canDrop(props: TreeNodeProps, monitor: DropTargetMonitor) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return monitor.getItem().parentId === props.node.parent!.id;
+    // return monitor.getItem().parentId === props.node.parent!.id;
+    return true;
   },
 };
 
@@ -120,8 +128,14 @@ function dropCollect(connect: DropTargetConnector, monitor: DropTargetMonitor) {
   };
 }
 
-export default DropTarget('sinoui-tree-node', treeNodeDrop, dropCollect)(
-  DragSource('sinoui-tree-node', treeNodeDrag, collect)(
-    TreeNodeComponent as any,
-  ),
+export default DropTarget(
+  'sinoui-tree-node',
+  treeNodeDrop,
+  dropCollect,
+)(
+  DragSource(
+    'sinoui-tree-node',
+    treeNodeDrag,
+    collect,
+  )(TreeNodeComponent as any),
 );
