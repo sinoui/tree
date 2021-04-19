@@ -1,5 +1,9 @@
 # 版本变更记录
 
+## v1.0.4 - 2021.04.19
+
+- feat(tree-model): 新增 moveNodeByPosition 方法修复树组件拖拽的问题
+
 ## v1.0.2 - 2020.9.17
 
 - fix(tree-model): 修复新增节点后再删除节点，出现误删除的缺陷
