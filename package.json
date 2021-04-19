@@ -1,8 +1,8 @@
 {
   "name": "sinoui-tree",
-  "version": "1.0.4",
+  "version": "0.1.0",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
