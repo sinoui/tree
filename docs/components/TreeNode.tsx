@@ -59,17 +59,18 @@ const treeNodeDrop = {
     //   return;
     // }
 
+    let position: 'before' | 'after';
+    if (hoverClientY > hoverMiddleY) {
+      position = 'after';
+    } else {
+      position = 'before';
+    }
     if (dragIndex !== -1) {
-      let position: 'before' | 'after';
-      if (hoverClientY > hoverMiddleY) {
-        position = 'after';
-      } else {
-        position = 'before';
-      }
-
       props.treeModel.moveNodeByPosition(dragNodeId, hoverNodeId, position);
     } else {
-      props.treeModel.addNode(hoverParentNodeId, {
+      const idx = props.treeModel.getNodeIdxOfParent(hoverNodeId);
+
+      props.treeModel.addNodeAt(hoverParentNodeId, idx, {
         id: dragNodeId,
         title: '新增节点',
         leaf: true,
