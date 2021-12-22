@@ -1,12 +1,9 @@
 {
   "name": "@sinoui/tree-models",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
-  "devDependencies": {
-    "ts-lib-tools": "^0.11.3",
-    "typescript": "^3.8.3"
-  },
+  "devDependencies": { "ts-lib-tools": "^0.11.3", "typescript": "^3.8.3" },
   "scripts": {
     "build": "ts-lib-tools build",
     "test": "ts-lib-tools test",
