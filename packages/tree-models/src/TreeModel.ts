@@ -391,7 +391,7 @@ export default class TreeModel {
   }
 
   /**
-   *
+   * 根据拖拽节点相对于目标节点的相对位置移动节点
    *
    * @param {string} dragNodeId 拖拽节点的id
    * @param {string} hoverNodeId 目标节点的id
@@ -413,35 +413,34 @@ export default class TreeModel {
     }
 
     const dragNode = this.getNodeById(dragNodeId);
-    let hoverNode = this.getNodeById(hoverNodeId);
+    const hoverNode = this.getNodeById(hoverNodeId);
 
     const dragIdx = this.getNodeIdx(dragNode);
     const dragCount = this.getDescendantCount(dragNode) + 1;
     const movingNodes = this.nodes.splice(dragIdx, dragCount);
 
     let hoverIdx = this.getNodeIdx(hoverNode);
+    let nextParent = hoverNode.parent ?? this.virtualRootNode;
 
     /*
       1. 位置为before，默认拖拽到当前hover节点的同级节点
       2. 位置为after
-        2.1 如果存在子节点，且目标节点处于展开状态，认为拖拽到当前hover节点的下级节点
-        2.2 如果不存在子节点，或者目标节点处于折叠状态，认为拖拽到当前hover节点的统计节点
+        2.1 目标节点处于展开状态（不考虑是否存在子节点），认为拖拽到当前hover节点的下级节点
+        2.2 目标节点处于折叠状态，认为拖拽到当前hover节点的同级节点
     */
     if (position === 'after') {
-      if (
-        hoverNode.expanded &&
-        hoverNode.children &&
-        hoverNode.children.length > 0
-      ) {
-        [hoverNode] = hoverNode.children;
+      // 展开状态
+      if (hoverNode.expanded) {
+        nextParent = hoverNode;
         hoverIdx += 1;
       } else {
+        // 折叠状态
         hoverIdx += this.getDescendantCount(hoverNode) + 1;
       }
     }
 
     const prevParent = dragNode.parent ?? this.virtualRootNode;
-    const nextParent = hoverNode.parent ?? this.virtualRootNode;
+
     this.nodes.splice(hoverIdx, 0, ...movingNodes);
 
     if (prevParent !== nextParent) {

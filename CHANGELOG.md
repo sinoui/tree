@@ -1,5 +1,9 @@
 # 版本变更记录
 
+## v1.0.7 - 2021.12.22
+
+- feat(tree-model): moveNodeByPosition 方法调整，postition 为 after 时，只考虑当前节点是否展开
+
 ## v1.0.4 - 2021.04.19
 
 - feat(tree-model): 新增 moveNodeByPosition 方法修复树组件拖拽的问题
