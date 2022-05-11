@@ -1,5 +1,9 @@
 # 版本变更记录
 
+## v1.0.8 - 2022.05.11
+
+- fix(tree): 修复节点多选时下级节点展开样式变形的bug
+
 ## v1.0.7 - 2021.12.22
 
 - feat(tree-model): moveNodeByPosition 方法调整，postition 为 after 时，只考虑当前节点是否展开

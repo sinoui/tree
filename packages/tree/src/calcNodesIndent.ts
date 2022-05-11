@@ -58,9 +58,6 @@ function calcNodesIndent(allNodes: TreeNodeType[], props: Options) {
   const indents: {
     [id: string]: number;
   } = {};
-  const relativeIndents: {
-    [id: string]: number;
-  } = {};
 
   const getChildren = (item: TreeNodeType) => {
     const children = !item.leaf
@@ -106,9 +103,8 @@ function calcNodesIndent(allNodes: TreeNodeType[], props: Options) {
     nodes.forEach((item) => {
       const relativeIndent =
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        (item.level === 0 ? 0 : relativeIndents[item.parent!.id]) +
+        (item.level === 0 ? 0 : indents[item.parent!.id]) +
         (item.level > 0 ? 0.7 : 0);
-      relativeIndents[item.id] = relativeIndent;
       let indent = relativeIndent;
 
       if (containsExpandedIcon && !nodeIcons[item.id].expanded) {
